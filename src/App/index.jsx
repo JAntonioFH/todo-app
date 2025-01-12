@@ -1,16 +1,11 @@
 import React, { useState } from 'react';
-import { TodoCounter } from './TodoCounter';
-import { TodoSearch } from './TodoSearch';
-import { TodoList } from './TodoList';
-import { TodoItem } from './TodoItem';
-import { CreateTodoButton } from './CreateTodoButton';
+
+import { useLocalStorage } from './useLocalStorage';
+import { AppUI } from './AppUI';
+
 
 function App() {
-  const [todos, setTodos] = useState([
-    { id: 1, text: 'Aprender React', isCompleted: false },
-    { id: 2, text: 'Hacer ejercicio', isCompleted: true },
-    { id: 3, text: 'Leer un libro', isCompleted: false },
-  ]);
+  const [todos, modifyItem] = useLocalStorage('tareas', []);
   const [searchValue, setSearchValue] = useState('');
   const [isMinimized, setIsMinimized] = useState(true);
 
@@ -22,49 +17,32 @@ function App() {
     const newTodos = todos.map((todo) =>
       todo.id === id ? { ...todo, isCompleted: !todo.isCompleted } : todo
     );
-    setTodos(newTodos);
+    modifyItem(newTodos);
   };
 
-  const addTodo = (text) => {
-    setTodos([...todos, { id: Date.now(), text, isCompleted: false }]);
+  function addTodo(text){
+    const todoActual = { id: Date.now(), text, isCompleted: false }
+    modifyItem([...todos, todoActual]);
   };
 
   const deleteTodo = (id) => {
-    setTodos(todos.filter((todo) => todo.id !== id));
+    const todosFiltrados = todos.filter((todo) => todo.id !== id);
+    modifyItem(todosFiltrados);
   };
 
   return (
-    <div style={isMinimized ? styles.minimizedContainer : styles.container}>
-      <button
-        style={styles.toggleButton}
-        onClick={() => setIsMinimized(!isMinimized)}
-      >
-        {isMinimized ? '+' : '−'}
-      </button>
-
-      {!isMinimized && (
-        <div style={styles.appContent}>
-          <TodoCounter
-            total={todos.length}
-            completed={todos.filter((todo) => todo.isCompleted).length}
-          />
-          <TodoSearch onSearch={setSearchValue} />
-          <TodoList>
-            {filteredTodos.map((todo) => (
-              <TodoItem
-                key={todo.id}
-                text={todo.text}
-                isCompleted={todo.isCompleted}
-                onComplete={() => toggleCompleteTodo(todo.id)}
-                onDelete={() => deleteTodo(todo.id)}
-              />
-            ))}
-          </TodoList>
-          <CreateTodoButton onCreate={addTodo} />
-        </div>
-      )}
-    </div>
-  );
+    <AppUI
+      todos={todos}
+      setSearchValue={setSearchValue}
+      filteredTodos={filteredTodos}
+      toggleCompleteTodo={toggleCompleteTodo}
+      addTodo={addTodo}
+      deleteTodo={deleteTodo}
+      isMinimized={isMinimized}
+      setIsMinimized={setIsMinimized}
+      styles={styles}
+    />
+  )
 }
 
 const styles = {
