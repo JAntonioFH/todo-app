@@ -1,0 +1,45 @@
+.app-container {
+    position: absolute; /* Cambiado de 'fixed' a 'absolute' */
+    bottom: 20px; /* Se mantiene la distancia desde la parte inferior del contenedor */
+    right: 20px; /* Se mantiene la distancia desde la parte derecha del contenedor */
+    background-color: #fff;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    padding: 20px;
+    z-index: 1000;
+    width: 300px;
+  }
+  
+  .minimized-container {
+    position: absolute; /* Cambiado de 'fixed' a 'absolute' */
+    bottom: 20px; /* Se mantiene la distancia desde la parte inferior del contenedor */
+    right: 20px; /* Se mantiene la distancia desde la parte derecha del contenedor */
+    background-color: #fff;
+    border-radius: 50%;
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2);
+    z-index: 1000;
+    cursor: pointer;
+    color: #007bff;
+    font-size: 24px;
+  }
+  
+  .toggle-button {
+    font-size: 24px;
+    font-weight: bold;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+  }
+  
+  .app-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+  }
+  
